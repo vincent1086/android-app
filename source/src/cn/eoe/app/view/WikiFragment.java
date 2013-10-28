@@ -1,5 +1,6 @@
 package cn.eoe.app.view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +41,35 @@ public class WikiFragment extends BaseListFragment {
 
 	};
 
+    public WikiFragment()
+    {
+    }
+
 	public WikiFragment(Activity c, WikiCategoryListEntity categorys) {
 		this.mActivity = c;
-		if (categorys != null) {
-			this.more_url = categorys.getMore_url();
-			this.items_list = categorys.getItems();
-		}
+        newInstance(categorys);
 	}
+
+    public void newInstance(WikiCategoryListEntity category) {
+        if (category != null) {
+            Bundle args = new Bundle();
+            args.putSerializable("items_list", (Serializable)category.getItems());
+            args.putString("more_url",category.getMore_url());
+            setArguments(args);
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity=activity;
+        Bundle args=getArguments();
+        if(args!=null)
+        {
+            items_list= (List<WikiContentItem>) args.getSerializable("items_list");
+            more_url=args.getString("more_url");
+        }
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

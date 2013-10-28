@@ -1,11 +1,14 @@
 package cn.eoe.app.entity;
 import cn.eoe.app.entity.base.BaseContentItem;
+
+import java.io.Serializable;
+
 /**
  * 博客ListItem实体类
  * @author wangxin
  *
  */
-public class BlogContentItem extends BaseContentItem{
+public class BlogContentItem extends BaseContentItem implements Serializable{
 	
 	private String 	name;				//博主姓名
 	

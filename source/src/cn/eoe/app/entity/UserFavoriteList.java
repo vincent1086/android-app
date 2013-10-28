@@ -1,8 +1,9 @@
 package cn.eoe.app.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class UserFavoriteList {
+public class UserFavoriteList implements Serializable {
 	private String name;
 	private List<UserCollectionItem> lists;
 

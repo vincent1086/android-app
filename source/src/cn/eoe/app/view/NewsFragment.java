@@ -1,5 +1,6 @@
 package cn.eoe.app.view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,19 +54,35 @@ public class NewsFragment extends BaseListFragment {
 	// in order to solve an exception that "can't instantiate class cn.eoe.app.view.NewsFragment; no empty constructor"
 	// I found it in this case : 1.open eoe program -> 2.change system language -> 3.reopen eoe, can see FC(force close)
 	// I think this bug will happens in many cases.
-	public NewsFragment() {
-		
-	}
+	public NewsFragment()
+    {}
 	//--------------------
 	
 	public NewsFragment(Activity c, NewsCategoryListEntity categorys) {
 		this.mActivity = c;
-
-		if (categorys != null) {
-			this.items_list = categorys.getItems();
-			more_url = categorys.getMore_url();
-		}
+        newInstance(categorys);
 	}
+
+    public void newInstance(NewsCategoryListEntity category) {
+        if (category != null) {
+            Bundle args = new Bundle();
+            args.putSerializable("items_list", (Serializable)category.getItems());
+            args.putString("more_url",category.getMore_url());
+            setArguments(args);
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity=activity;
+        Bundle args=getArguments();
+        if(args!=null)
+        {
+            items_list= (List<NewsContentItem>) args.getSerializable("items_list");
+            more_url=args.getString("more_url");
+        }
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

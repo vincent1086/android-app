@@ -1,5 +1,6 @@
 package cn.eoe.app.view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,11 +35,31 @@ public class UserIntroFragment extends Fragment {
 	private List<Map<String, Object>> mList;
 	private Context mContext;
 
+    public UserIntroFragment()
+    {
+    }
+
 	public UserIntroFragment(UserResponse result) {
-		mUserResponse = result;
+		newInstance(result);
 	}
 
-	// [start]继承方法
+    public void newInstance(UserResponse result) {
+        Bundle args = new Bundle();
+        args.putSerializable("mUserResponse", (Serializable) result);
+        setArguments(args);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args=getArguments();
+        if(args!=null)
+        {
+            mUserResponse= (UserResponse) args.getSerializable("mUserResponse");
+        }
+    }
+
+    // [start]继承方法
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

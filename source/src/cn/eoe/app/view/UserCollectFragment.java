@@ -1,5 +1,6 @@
 package cn.eoe.app.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import cn.eoe.app.R;
 import cn.eoe.app.entity.UserResponse;
 
+import java.io.Serializable;
+
 public class UserCollectFragment extends Fragment {
 
 	LinearLayout mLinearLayout;
@@ -28,11 +31,32 @@ public class UserCollectFragment extends Fragment {
 	private WindowManager wm;
 	private UserCollectListFragment mUserFragment;
 
+    public UserCollectFragment()
+    {
+    }
+
 	public UserCollectFragment(UserResponse userResponse,
 			FragmentActivity activity) {
 		mActivity = activity;
-		mUserResponse = userResponse;
+		newInstance(userResponse);
 	}
+
+    public void newInstance(UserResponse result) {
+        Bundle args = new Bundle();
+        args.putSerializable("mUserResponse", (Serializable) result);
+        setArguments(args);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity=(FragmentActivity)activity;
+        Bundle args=getArguments();
+        if(args!=null)
+        {
+            mUserResponse= (UserResponse) args.getSerializable("mUserResponse");
+        }
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

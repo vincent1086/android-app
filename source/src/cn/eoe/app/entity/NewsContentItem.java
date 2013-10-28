@@ -1,11 +1,14 @@
 package cn.eoe.app.entity;
 import cn.eoe.app.entity.base.BaseContentItem;
+
+import java.io.Serializable;
+
 /**
  * 资讯详情item实体类
  * @author wangxin
  *
  */
-public class NewsContentItem extends BaseContentItem{
+public class NewsContentItem extends BaseContentItem implements Serializable{
 	
 	private String 	title;
 	

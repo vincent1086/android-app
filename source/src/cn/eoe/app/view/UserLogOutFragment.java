@@ -16,51 +16,72 @@ import cn.eoe.app.ui.UserLoginUidActivity;
 
 public class UserLogOutFragment extends Fragment implements OnClickListener {
 
-	private Button btnLogOut;
-	private TextView mtxt;
+    private Button btnLogOut;
+    private TextView mtxt;
 
-	private Context mContext;
-	private Activity mActivity;
-	private boolean isShowtxt;
+    private Context mContext;
+    private Activity mActivity;
+    private boolean isShowtxt;
 
-	public UserLogOutFragment(Activity activity,boolean isshow) {
-		mActivity = activity;
-		isShowtxt=isshow;
-	}
+    public UserLogOutFragment()
+    {
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreateView(inflater, container, savedInstanceState);
-		mContext = inflater.getContext();
-		View view = inflater.inflate(R.layout.user_login_log_out, null);
-		btnLogOut = (Button) view.findViewById(R.id.user_button_logOut);
-		mtxt = (TextView) view.findViewById(R.id.user_textview_error);
-		showText(isShowtxt);
-		btnLogOut.setOnClickListener(this);
-		return view;
-	}
+    public UserLogOutFragment(Activity activity, boolean isshow) {
+        mActivity = activity;
+        newInstance(isshow);
+    }
 
-	public void showText(boolean isShow) {
-		if (isShow) {
-			mtxt.setVisibility(View.VISIBLE);
-		} else {
-			mtxt.setVisibility(View.GONE);
-		}
-	}
+    public void newInstance(boolean isshow) {
+        Bundle args = new Bundle();
+        args.putBoolean("isShowtxt",isshow);
+        setArguments(args);
+    }
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		switch (v.getId()) {
-		case R.id.user_button_logOut:
-			SharedPreferences share = mContext.getSharedPreferences(
-					UserLoginUidActivity.SharedName, Context.MODE_PRIVATE);
-			SharedPreferences.Editor edit = share.edit();
-			edit.clear().commit();
-			mActivity.finish();
-			break;
-		}
-	}
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity=activity;
+        Bundle args=getArguments();
+        if(args!=null)
+        {
+            isShowtxt=args.getBoolean("isShowtxt");
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreateView(inflater, container, savedInstanceState);
+        mContext = inflater.getContext();
+        View view = inflater.inflate(R.layout.user_login_log_out, null);
+        btnLogOut = (Button) view.findViewById(R.id.user_button_logOut);
+        mtxt = (TextView) view.findViewById(R.id.user_textview_error);
+        showText(isShowtxt);
+        btnLogOut.setOnClickListener(this);
+        return view;
+    }
+
+    public void showText(boolean isShow) {
+        if (isShow) {
+            mtxt.setVisibility(View.VISIBLE);
+        } else {
+            mtxt.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        switch (v.getId()) {
+            case R.id.user_button_logOut:
+                SharedPreferences share = mContext.getSharedPreferences(
+                        UserLoginUidActivity.SharedName, Context.MODE_PRIVATE);
+                SharedPreferences.Editor edit = share.edit();
+                edit.clear().commit();
+                mActivity.finish();
+                break;
+        }
+    }
 }

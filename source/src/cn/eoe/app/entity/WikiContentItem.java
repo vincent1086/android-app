@@ -1,7 +1,9 @@
 package cn.eoe.app.entity;
 
 
-public class WikiContentItem  {
+import java.io.Serializable;
+
+public class WikiContentItem  implements Serializable{
 	
 	private String title;
 	private int 		id;

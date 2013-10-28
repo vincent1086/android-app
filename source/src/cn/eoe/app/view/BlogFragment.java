@@ -1,5 +1,6 @@
 package cn.eoe.app.view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +36,6 @@ public class BlogFragment extends BaseListFragment {
 	private BlogsCategoryListEntity loadMoreEntity;
 	private MyAdapter mAdapter;
 
-	public BlogFragment() {
-	}
-
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -50,16 +48,37 @@ public class BlogFragment extends BaseListFragment {
 		};
 	};
 
+    public BlogFragment()
+    {
+    }
+
 	public BlogFragment(Activity c, BlogsCategoryListEntity categorys) {
 		this.mActivity = c;
-
-		if (categorys != null) {
-			more_url = categorys.getMore_url();
-			this.items_list = categorys.getItems();
-		}
+        newInstance(categorys);
 	}
 
-	@Override
+    public void newInstance(BlogsCategoryListEntity category) {
+        if (category != null) {
+            Bundle args = new Bundle();
+            args.putSerializable("items_list", (Serializable)category.getItems());
+            args.putString("more_url",category.getMore_url());
+            setArguments(args);
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity=activity;
+        Bundle args=getArguments();
+        if(args!=null)
+        {
+            items_list= (List<BlogContentItem>) args.getSerializable("items_list");
+            more_url=args.getString("more_url");
+        }
+    }
+
+    @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);

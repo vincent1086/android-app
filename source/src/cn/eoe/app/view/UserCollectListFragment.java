@@ -1,5 +1,6 @@
 package cn.eoe.app.view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,11 +34,32 @@ public class UserCollectListFragment extends Fragment implements
 
 	private UserFavoriteList mUserFavoriteList;
 
+    public UserCollectListFragment()
+    {
+    }
+
 	public UserCollectListFragment(Activity activity,
 			UserFavoriteList userFavoriteList) {
-		mUserFavoriteList = userFavoriteList;
 		mActivity = activity;
+        newInstance(userFavoriteList);
 	}
+
+    public void newInstance(UserFavoriteList userFavoriteList) {
+        Bundle args = new Bundle();
+        args.putSerializable("mUserFavoriteList", (Serializable) userFavoriteList);
+        setArguments(args);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity=activity;
+        Bundle args=getArguments();
+        if(args!=null)
+        {
+            mUserFavoriteList= (UserFavoriteList) args.getSerializable("mUserFavoriteList");
+        }
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -1,6 +1,8 @@
 package cn.eoe.app.entity;
 
-public class UserCollectionItem {
+import java.io.Serializable;
+
+public class UserCollectionItem implements Serializable{
 	private String title;
 	private String short_content;
 	private String url;
